@@ -22,6 +22,7 @@ const heroTitle = new SplitType(".hero_h1", { types: "chars" });
 const heroSub = new SplitType(".hero_text-block", { types: "chars" });
 
 const staggerBlur = gsap.timeline({
+    defaults: {
         ease: "power1.out",
         stagger: {
             each: 0.02,
