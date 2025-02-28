@@ -15,11 +15,28 @@ function updateDateTime() {
 updateDateTime();
 
 
+// set 'aria-hidden' to 'true' for split type chars
+function hideAria(e) {
+    e.setAttribute('aria-hidden', 'true');
+}
+
+
+
 
 // Stagger blur load
-const firstName = document.querySelector(".hero_name")
-const heroTitle = new SplitType(".hero_h1", { types: "chars" });
-const heroSub = new SplitType(".hero_text-block", { types: "chars" });
+const firstName = document.querySelector(".hero_name");
+
+const heroTitle = document.querySelector(".hero_h1");
+heroTitle.setAttribute('aria-label', heroTitle.innerText);
+
+const heroTitleSplit = new SplitType(heroTitle, { types: "chars" });
+heroTitleSplit.chars.forEach(l => hideAria(l));
+
+const heroSub = document.querySelector('.hero_text-block');
+heroSub.setAttribute('aria-label', heroSub.innerText);
+
+const heroSubSplit = new SplitType(heroSub, { types: "chars" });
+heroSubSplit.chars.forEach(l => hideAria(l));
 
 const staggerBlur = gsap.timeline({
     defaults: {
@@ -33,13 +50,13 @@ const staggerBlur = gsap.timeline({
 });
 
 staggerBlur
-    .from(heroTitle.chars, {
+    .from(heroTitleSplit.chars, {
         y: 30,
         filter: "blur(30px)",
         opacity: 0,
         duration: 0.75
     }, 0.1)
-    .from(heroSub.chars, {
+    .from(heroSubSplit.chars, {
         y: 30,
         filter: "blur(30px)",
         opacity: 0,
@@ -113,15 +130,24 @@ const heroText = document.querySelectorAll(".hero_h1");
 // Animate hero name
 // Disappears after load in animation
 // reappear/disappear on hover
-const heroNameText = new SplitType(".hero_name-span", { types: "chars" });
+const heroNameText = document.querySelectorAll(".hero_name");
+heroNameText.forEach((el) => { // Sets aria label to account for screen readers and split type
+    el.setAttribute('aria-label', el.innerText);
+})
+
+const heroNameTextSplit = new SplitType(".hero_name-span", { types: "chars" });
+heroNameTextSplit.chars.forEach(l => hideAria(l));
+
 const heroName = document.querySelectorAll(".hero_name");
 heroName.forEach((name) => {
     name.addEventListener("mouseover", showName);   // mouse enter state to show name
     name.addEventListener("mouseleave", hideName);  // hide name after mouse out
 } )
 
+
 function hideName() {
-    gsap.to(heroNameText.chars, {
+    console.log(heroNameTextSplit.chars);
+    gsap.to(heroNameTextSplit.chars, {
         filter: "blur(10px)",
         opacity: 0,
         duration: 1.5,
@@ -134,7 +160,7 @@ function hideName() {
 }
 
 function showName() {
-    gsap.to(heroNameText.chars, {
+    gsap.to(heroNameTextSplit.chars, {
         filter: "blur(0px)",
         opacity: 1,
         stagger: {
@@ -148,7 +174,9 @@ function showName() {
 
 // Animate info below the fold on scroll
 // Opacity, blur, y
-const infoText = new SplitType(".info_p-heading", { types: "chars" });
+const infoText = document.querySelector(".info_p-heading");
+infoText.setAttribute("aria-label", infoText.innerText);
+const infoTextSplit = new SplitType(".info_p-heading", { types: "chars" });
 const infoSub = new SplitType(".info_p-sub", { types: "chars" });
 const infoP = new SplitType(".info_p-span", { types: "chars" });
 let interval;
@@ -169,7 +197,7 @@ const tl = gsap.timeline({
         ease: "power2.out"
     }
 });
-tl.from([infoText.chars, infoSub.chars, infoP.chars], {
+tl.from([infoTextSplit.chars, infoSub.chars, infoP.chars], {
     y: 2,
     filter: "blur(5px)",
     opacity: 0,
@@ -187,6 +215,7 @@ const resetST = ScrollTrigger.create({
 });
 
 
+// Animate underline on link hover
 const infoLink = document.querySelector('.info_p-span');
 const underline = document.querySelector('.underline');
 function enterAnimation() {
@@ -196,6 +225,7 @@ function leaveAnimation() {
     infoLink.tl.play();
 }
 
+
 infoLink.tl = gsap.timeline({
     paused: true,
     defaults: {
@@ -203,16 +233,13 @@ infoLink.tl = gsap.timeline({
         duration: 0.5
     }
 });
-
 infoLink.tl.fromTo(underline, {
     width: "0%",
     left: "0%"
 }, {
     width: "100%",
 })
-
 infoLink.tl.add("midway");
-
 infoLink.tl.fromTo(underline, {
     width: "100%",
     left: "0%"
