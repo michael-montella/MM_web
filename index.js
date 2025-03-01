@@ -291,6 +291,11 @@ projectContainers.forEach((el) => {
             toggleActions: "restart none none reverse"
         },
     })
+    
+    //each element might need its own timeline
+    //create variables for each delay for easier editing
+    // const titleDelay = 0.25;
+    // const dateDelay = 0.75
 
     console.log(bodyLines.lines);
     projectTL.from(subTitleChars.chars, {
