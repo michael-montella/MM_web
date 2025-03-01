@@ -146,7 +146,6 @@ heroName.forEach((name) => {
 
 
 function hideName() {
-    console.log(heroNameTextSplit.chars);
     gsap.to(heroNameTextSplit.chars, {
         filter: "blur(10px)",
         opacity: 0,
@@ -256,6 +255,90 @@ infoLink.addEventListener("mouseleave", leaveAnimation);
 
 
 
+// Selected Work Sticky Scroll
+const projectTitles = Array.from(document.querySelectorAll('.project-title'));
+const projectContainers = Array.from(document.querySelectorAll('.selected_container'));
+
+function textUp(text, el) {
+    
+}
+
+projectContainers.forEach((el) => {
+    const title = el.querySelector('.selected_title span');
+    const titleChars = new SplitType(title, { types: 'chars' });
+
+    const subTitle = el.querySelector('.selected_number span');
+    const subTitleChars = new SplitType(subTitle, { types: 'chars' });
+
+    const linkText = el.querySelector('.selected_link-text span');
+    const linkChars = new SplitType(linkText, { types: 'chars' });
+
+    const dateText = el.querySelector('.selected_date span');
+    const dateChars = new SplitType(dateText, { types: 'chars' });
+
+    const bodyText = el.querySelectorAll('.selected_categories span');
+    const bodyLines = [];
+    bodyText.forEach((line) => {
+        const split = new SplitType(line, { types: 'chars' });
+        bodyLines.push(split);
+    })
+    // I think to get each line I might need to query selector all, then store the split type object in an array to pass into tween
+    console.log(bodyLines);
+    const projectTL = gsap.timeline({
+        scrollTrigger: {
+            trigger: el,
+            start: "top 95%",
+            toggleActions: "restart none none reverse"
+        },
+    })
+
+    console.log(bodyLines.lines);
+    projectTL.from(subTitleChars.chars, {
+        y: 100,
+        duration: 1,
+        opacity: 0,
+        ease: "power2.out",
+        stagger: {
+            each: 0.01,
+            from: "start"
+        }
+    })
+    .from([titleChars.chars, linkChars.chars], {
+        y: 100,
+        duration: 1,
+        opacity: 0,
+        ease: "power2.out",
+        stagger: {
+            each: 0.01,
+            from: "start"
+        }
+    }, "-=0.75")
+    .from(dateChars.chars, {
+        y: 100,
+        duration: 1,
+        opacity: 0,
+        ease: "power2.out",
+        stagger: {
+            each: 0.01,
+            from: "start"
+        }
+    }, "-=0.75")
+    .from(bodylines, {
+        y: 100,
+        duration: 1,
+        opacity: 0,
+        ease: "power2.out",
+        stagger: {
+            each: 0.01,
+            from: "start"
+        }
+    }, "-=0.75")
+
+})
+
+
+
+
 
 
 // individual text opacity change on hover
@@ -277,7 +360,7 @@ infoLink.addEventListener("mouseleave", leaveAnimation);
 // lenis smooth scroll
 let lenis = new Lenis({
     lerp: 0.1,
-    wheelMultiplier: 0.7,
+    wheelMultiplier: 0.9,
     gestureOrientation: "vertical",
     normalizeWheel: false,
     smoothTouch: false,
