@@ -297,6 +297,8 @@ projectContainers.forEach((el) => {
     // const titleDelay = 0.25;
     // const dateDelay = 0.75
 
+    //maybe not. maybe best to keep one master timeline for all animations with same trigger (container)
+
     console.log(bodyLines.lines);
     projectTL.from(subTitleChars.chars, {
         y: 100,
