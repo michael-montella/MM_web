@@ -256,92 +256,53 @@ infoLink.addEventListener("mouseleave", leaveAnimation);
 
 
 // Selected Work Sticky Scroll
-const projectTitles = Array.from(document.querySelectorAll('.project-title'));
-const projectContainers = Array.from(document.querySelectorAll('.selected_container'));
+// Get each container and store in array
+gsap.utils.toArray(".selected_container").forEach((el) => { // iterate through each container, get elements, and create gsap timeline w/ scroll trigger
 
-function textUp(text, el) {
-    
-}
-
-projectContainers.forEach((el) => {
-    const title = el.querySelector('.selected_title span');
+    const title = el.querySelector('.selected_title span'); // Project Title
+    title.setAttribute('aria-label', title.innerText);
     const titleChars = new SplitType(title, { types: 'chars' });
 
-    const subTitle = el.querySelector('.selected_number span');
+    const subTitle = el.querySelector('.selected_number span'); // Project SubTitle
+    subTitle.setAttribute('aria-label', subTitle.innerText);
     const subTitleChars = new SplitType(subTitle, { types: 'chars' });
 
-    const linkText = el.querySelector('.selected_link-text span');
+    const linkText = el.querySelector('.selected_link-text span'); // Project link
     const linkChars = new SplitType(linkText, { types: 'chars' });
 
-    const dateText = el.querySelector('.selected_date span');
+    const dateText = el.querySelector('.selected_date span'); // Project date
     const dateChars = new SplitType(dateText, { types: 'chars' });
 
-    const bodyText = el.querySelectorAll('.selected_categories span');
-    const bodyLines = [];
-    bodyText.forEach((line) => {
-        const split = new SplitType(line, { types: 'chars' });
-        bodyLines.push(split);
-    })
-    // I think to get each line I might need to query selector all, then store the split type object in an array to pass into tween
-    console.log(bodyLines);
-    const projectTL = gsap.timeline({
-        scrollTrigger: {
-            trigger: el,
-            start: "top 95%",
-            toggleActions: "restart none none reverse"
-        },
-    })
+    const bodyText = el.querySelectorAll('.selected_categories span'); // Project body text
+   
     
-    //each element might need its own timeline
-    //create variables for each delay for easier editing
-    // const titleDelay = 0.25;
-    // const dateDelay = 0.75
+    const projectTL = gsap.timeline({ // Create timeline
+        scrollTrigger: {
+            trigger: el,    // This container is trigger
+            start: "top 95%",
+            toggleActions: "restart none none reverse",     // Reverses animation when it leaves out the bottom
+        },
+        defaults: { // Each element is animated in the same way so all properties are in defaults
+            yPercent: 100,
+            duration: 0.9,
+            ease: "power3.out",
+            stagger: {
+                each: 0.01,
+                from: "start"
+            }
+        }
+    });
 
-    //maybe not. maybe best to keep one master timeline for all animations with same trigger (container)
+    projectTL.from(subTitleChars.chars, {}) 
+    .from([titleChars.chars, linkChars.chars], {}, "-=0.75")
+    .from(dateChars.chars, {}, "-=0.75")
 
-    console.log(bodyLines.lines);
-    projectTL.from(subTitleChars.chars, {
-        y: 100,
-        duration: 1,
-        opacity: 0,
-        ease: "power2.out",
-        stagger: {
-            each: 0.01,
-            from: "start"
-        }
-    })
-    .from([titleChars.chars, linkChars.chars], {
-        y: 100,
-        duration: 1,
-        opacity: 0,
-        ease: "power2.out",
-        stagger: {
-            each: 0.01,
-            from: "start"
-        }
-    }, "-=0.75")
-    .from(dateChars.chars, {
-        y: 100,
-        duration: 1,
-        opacity: 0,
-        ease: "power2.out",
-        stagger: {
-            each: 0.01,
-            from: "start"
-        }
-    }, "-=0.75")
-    .from(bodylines, {
-        y: 100,
-        duration: 1,
-        opacity: 0,
-        ease: "power2.out",
-        stagger: {
-            each: 0.01,
-            from: "start"
-        }
-    }, "-=0.75")
-
-})
+    bodyText.forEach((line) => { // each line of body text is stored in an array, loop through array and create split type
+        line.setAttribute('aria-label', line.innerText);
+        const split = new SplitType(line, { types: 'chars' });
+        projectTL.from(split.chars, {}, "<");   // Add animation to end of timeline
+    });
+});
 
 
 
