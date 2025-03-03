@@ -253,6 +253,23 @@ infoLink.addEventListener("mouseleave", leaveAnimation);
 
 
 
+// Quote text animate in -> gotta wrap in span or something I think
+
+// gsap.utils.toArray(".indent").forEach((el) => {
+//     console.log(el.innerText);
+//     const quoteLines = new SplitType(el, { types: "lines" });
+
+//     gsap.from(quoteLines.lines, {
+//         yPercent: 100,
+//         duration: 0.9,
+//         ease: "power3.out",
+//         stagger: {
+//             each: 0.01,
+//             from: "start"
+//         }
+//     })
+// })
+
 
 
 // Selected Work Sticky Scroll
@@ -327,8 +344,8 @@ gsap.utils.toArray(".selected_container").forEach((el) => { // iterate through e
 
 // lenis smooth scroll
 let lenis = new Lenis({
-    lerp: 0.1,
-    wheelMultiplier: 0.9,
+    lerp: 0.2,
+    wheelMultiplier: 1,
     gestureOrientation: "vertical",
     normalizeWheel: false,
     smoothTouch: false,
