@@ -262,7 +262,7 @@ const projectContainers = Array.from(document.querySelectorAll('.selected_contai
 function textUp(text, el) {
     
 }
-
+// use gsap.utils.toArray instead of reference to querySelectorAll
 projectContainers.forEach((el) => {
     const title = el.querySelector('.selected_title span');
     const titleChars = new SplitType(title, { types: 'chars' });
