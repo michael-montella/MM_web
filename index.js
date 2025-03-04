@@ -9,123 +9,38 @@ function updateDateTime() {
         timeZoneName: 'short' 
     });
 
+
     document.getElementById('info-date').innerHTML = formattedDate;
     document.getElementById('info-time').innerHTML = formattedTime;
+    
 }
 updateDateTime();
 
+function getAspect() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    document.getElementById('info-aspect').innerHTML = window.innerWidth + "x" + window.innerHeight;
+}
+getAspect();
 
+window.addEventListener('resize', getAspect);
 // set 'aria-hidden' to 'true' for split type chars
 function hideAria(e) {
     e.setAttribute('aria-hidden', 'true');
 }
 
-
-
-
-// Stagger blur load
-const firstName = document.querySelector(".hero_name");
-
-const heroTitle = document.querySelector(".hero_h1");
-heroTitle.setAttribute('aria-label', heroTitle.innerText);
-
-const heroTitleSplit = new SplitType(heroTitle, { types: "chars" });
-heroTitleSplit.chars.forEach(l => hideAria(l));
-
-const heroSub = document.querySelector('.hero_text-block');
-heroSub.setAttribute('aria-label', heroSub.innerText);
-
-const heroSubSplit = new SplitType(heroSub, { types: "chars" });
-heroSubSplit.chars.forEach(l => hideAria(l));
-
-const staggerBlur = gsap.timeline({
-    defaults: {
-        ease: "power1.out",
+function textUp(target) {
+    gsap.from(target, {
+        yPercent: 100,
+        opacity: 0,
+        ease: "power3.out",
         stagger: {
-            each: 0.02,
-            from: "random"
-        }
-    },
-    onComplete: hideName
-});
-
-staggerBlur
-    .from(heroTitleSplit.chars, {
-        y: 30,
-        filter: "blur(30px)",
-        opacity: 0,
-        duration: 0.75
-    }, 0.1)
-    .from(heroSubSplit.chars, {
-        y: 30,
-        filter: "blur(30px)",
-        opacity: 0,
-        duration: 1
-    }, "<=0.1")
-
-
-
-const heroText = document.querySelectorAll(".hero_h1");
-// heroText.forEach((text) => {
-//     text.addEventListener("mouseover", animateText);
-// })
-// function animateText() {
-//     const title = new SplitType(".hero_h1", { types: "words" });
-//     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*";
-//     const words = title.words;
-//     const finalText = document.querySelector('.hero_h1').innerText;
-//     words.forEach((el) => {
-//         const word = new SplitType(el, { types: "chars" });
-
-//         gsap.to(word, {
-//             y: 100,
-//             stagger: {
-//                 each: 0.05,
-//                 from: "random"
-//             }
-//         })
-//     })
-
-//     // gsap.set(charElements, {opacity: 1});
-//     // charElements.forEach((char, i) => {
-//     //   gsap.to(char, {
-//     //     duration: 1,
-//     //     textContent: finalText[i],
-//     //     ease: "power2.out",
-//     //     repeat: 0,
-//     //     delay: i * 0.1,
-//     //     modifiers: {
-//     //         textContent: () => chars[Math.floor(Math.random() * chars.length)]
-//     //     },
-//     //     onComplete: () => {
-//     //         char.innerText = finalText[i];
-//     //     }
-//     //   });  
-//     // });
-//     // const originalText = this.innerText;
-//     // const
-//     // const splitText = new SplitType(this, { types: "chars" });
-
-//     // const charElements = splitText.chars;
-//     // const indices = [...Array(charElements.length).keys()];
-
-//     // indices.sort(() => Math.random() - 0.5);
-//     // indices.forEach((charIndex, i) => {
-//     //     gsap.to(charElements[charIndex], {
-//     //         duration: 0.7,
-//     //         textContent: finalText[charIndex],
-//     //         repeat: 0,
-//     //         delay: i * 0.1,
-//     //         modifiers: {
-//     //             textContent: () => chars[Math.floor(Math.random() * chars.length)]
-//     //         },
-//     //         onComplete: () => {
-//     //             charElements[charIndex].innerText = originalText;
-//     //         }
-//     //     })
-//     // })
-// }
-
+            each: 0.01,
+            from: "start"
+        },
+        duration: 1,
+    })
+}
 
 // Animate hero name
 // Disappears after load in animation
@@ -144,30 +59,122 @@ heroName.forEach((name) => {
     name.addEventListener("mouseleave", hideName);  // hide name after mouse out
 } )
 
-
-function hideName() {
-    gsap.to(heroNameTextSplit.chars, {
+const nameAnim = gsap.timeline({
+    defaults: {
+        duration: 1.25,
         filter: "blur(10px)",
         opacity: 0,
-        duration: 1.5,
-        ease: "power2.in",
+        ease: "power3.in",
         stagger: {
-            each: 0.06,
+            each: 0.03,
             from: "end"
         }
-    })
+    },
+    paused: true
+}).to(heroNameTextSplit.chars, {})
+
+function hideName() {
+    nameAnim.play(0);
 }
 
 function showName() {
-    gsap.to(heroNameTextSplit.chars, {
-        filter: "blur(0px)",
-        opacity: 1,
+    nameAnim.reverse();
+}
+
+// Preloader animation
+const firstName = document.querySelector(".hero_name");
+
+const heroTitle = document.querySelector(".hero_h1");
+heroTitle.setAttribute('aria-label', heroTitle.innerText);
+
+const heroTitleSplit = new SplitType(heroTitle, { types: "chars" });
+heroTitleSplit.chars.forEach(l => hideAria(l));
+
+const heroSub = document.querySelector('.hero_text-block');
+heroSub.setAttribute('aria-label', heroSub.innerText);
+
+const heroSubSplit = new SplitType(heroSub, { types: "chars" });
+heroSubSplit.chars.forEach(l => hideAria(l));
+
+const loaderTextSplit = new SplitType($('.loader_span'), {types: "chars"})
+
+const preloader = gsap.timeline({
+    defaults: {
+        duration: 1,
+        ease: "power3.out"
+    },
+    // onComplete: hideName
+});
+
+const overlays = document.querySelectorAll('.overlay');
+console.log(overlays);
+
+function init() {
+    preloader
+    .from('.loader_h1', {
+        autoAlpha: 0
+    }, 0.5)
+    .from(loaderTextSplit.chars, {
+        yPercent: 100,
+        ease: "power4.inOut",
+        duration: 1,
         stagger: {
-            each: 0.06,
+            each: 0.01,
             from: "start"
         }
-    })
+    }, "<")
+    .to(loaderTextSplit.chars, {
+        yPercent: -100,
+        ease: "power2.inOut",
+        duration: 1,
+        stagger: {
+            each: 0.01,
+            from: "start"
+        }
+    }, "+=0.75")
+    .to('.overlay', {
+        yPercent: -100,
+        ease: "power4.inOut",
+        duration: 1.5,
+        stagger: {
+            each: 0.5,
+            from: "start"
+        }
+    }, "-=0.8")
+    .to('.hero_img-cover', {
+        yPercent: -100,
+        duration: 1,
+        ease: "power1.inOut"
+    }, "-=1")
+    .from('.hero_img', {
+        filter: "blur(10px)"
+    }, "-=0.5")
+    .from(heroTitleSplit.chars, {
+        yPercent: 100,
+        opacity: 0,
+        stagger: {
+            each: 0.01,
+            from: "start"
+        },
+    }, "<")
+    .from(heroSubSplit.chars, {
+        yPercent: 100,
+        opacity: 0,
+        stagger: {
+            each: 0.01,
+            from: "start"
+        },
+    }, "<")
+    
 }
+
+
+window.addEventListener('load', function(event) {
+    hideName();
+    init();
+});
+
+
 
 
 
@@ -189,29 +196,29 @@ function stopCounting() {
 
 const tl = gsap.timeline({
     defaults: {
+        opacity: 0,
+        yPercent: 100,
+        duration: 0.75,
+        ease: "power3.out",
         stagger: {
-            each: 0.01,
-            from: "random"
+            each: 0.005,
+            from: "start"
         },
-        ease: "power2.out"
-    }
-});
-tl.from([infoTextSplit.chars, infoSub.chars, infoP.chars], {
-    y: 2,
-    filter: "blur(5px)",
-    opacity: 0,
-    onComplete: startCounting
-})
-tl.pause(0);
-const playST = ScrollTrigger.create({
-    trigger: '.home-section-2',
-    onEnter: () => tl.play()
+        delay: 0.1
+    },
+    paused: true,
 });
 
-const resetST = ScrollTrigger.create({
+tl.from([infoTextSplit.chars, infoSub.chars, infoP.chars], {
+    onComplete: startCounting
+})
+
+const playST = ScrollTrigger.create({
     trigger: '.home-section-2',
-    onLeaveBack: stopCounting
+    onEnter: () => tl.play(),
+    onLeaveBack: stopCounting,
 });
+
 
 
 // Animate underline on link hover
@@ -275,6 +282,7 @@ infoLink.addEventListener("mouseleave", leaveAnimation);
 // Selected Work Sticky Scroll
 // Get each container and store in array
 gsap.utils.toArray(".selected_container").forEach((el) => { // iterate through each container, get elements, and create gsap timeline w/ scroll trigger
+
 
     const title = el.querySelector('.selected_title span'); // Project Title
     title.setAttribute('aria-label', title.innerText);
@@ -349,26 +357,98 @@ let lenis = new Lenis({
     gestureOrientation: "vertical",
     normalizeWheel: false,
     smoothTouch: false,
-  });
-  function raf(time) {
+});
+function raf(time) {
     lenis.raf(time);
     requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-  $("[data-lenis-start]").on("click", function () {
+}
+requestAnimationFrame(raf);
+$("[data-lenis-start]").on("click", function () {
     lenis.start();
-  });
-  $("[data-lenis-stop]").on("click", function () {
+});
+$("[data-lenis-stop]").on("click", function () {
     lenis.stop();
-  });
-  $("[data-lenis-toggle]").on("click", function () {
-    $(this).toggleClass("stop-scroll");
+});
+$("[data-lenis-toggle]").on("click", function () {
+        $(this).toggleClass("stop-scroll");
     if ($(this).hasClass("stop-scroll")) {
-      lenis.stop();
+     lenis.stop();
     } else {
-      lenis.start();
+        lenis.start();
     }
-  });
+});
+
+
+// Pixelated image
+document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll(".pixelated-image");
+
+    images.forEach((img) => {
+        // Ensure the image is fully loaded before processing
+        if (!img.complete) {
+            img.onload = () => setupCanvas(img);
+        } else {
+            setupCanvas(img);
+        }
+    });
+
+    function setupCanvas(img) {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Get the image's natural size
+        const width = img.naturalWidth;
+        const height = img.naturalHeight;
+
+        if (width === 0 || height === 0) {
+            console.error("Image dimensions are 0. Check if the image is fully loaded.");
+            return;
+        }
+
+        // Set canvas size to match image
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = img.width + "px";
+        canvas.style.height = img.height + "px";
+        canvas.style.transition = "opacity 0.5s ease-in-out"; // Optional fade-in
+
+        // Replace the image with the canvas
+        img.parentNode.replaceChild(canvas, img);
+
+        let percent = 0.05; // Start at 5% resolution
+
+        function reveal() {
+            if (percent >= 1) return; // Stop when fully revealed
+
+            percent += (percent < 0.1) ? 0.001 : 0.02; // Faster progression after 10%
+
+            const scaledWidth = Math.max(1, width * percent);
+            const scaledHeight = Math.max(1, height * percent);
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+            ctx.drawImage(canvas, 0, 0, scaledWidth, scaledHeight, 0, 0, width, height);
+
+            requestAnimationFrame(reveal);
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    reveal();
+                    observer.unobserve(canvas); // Run animation once
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(canvas);
+    }
+});
+
+
+
+
+
 
 
 
