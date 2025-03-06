@@ -380,70 +380,78 @@ $("[data-lenis-toggle]").on("click", function () {
 
 
 // Pixelated image
-document.addEventListener("DOMContentLoaded", function () {
-    const images = document.querySelectorAll(".pixelated-image");
+// document.addEventListener("DOMContentLoaded", function () {
+//     const images = document.querySelectorAll(".pixelated-image");
 
-    images.forEach((img) => {
-        // Ensure the image is fully loaded before processing
-        if (!img.complete) {
-            img.onload = () => setupCanvas(img);
-        } else {
-            setupCanvas(img);
-        }
-    });
+//     images.forEach((img) => {
+//         // Ensure the image is fully loaded before processing
+//         if (!img.complete) {
+//             img.onload = () => setupCanvas(img);
+//         } else {
+//             setupCanvas(img);
+//         }
+//     });
 
-    function setupCanvas(img) {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+//     function setupCanvas(img) {
+//         const canvas = document.createElement("canvas");
+//         const ctx = canvas.getContext("2d");
 
-        // Get the image's natural size
-        const width = img.naturalWidth;
-        const height = img.naturalHeight;
+//         // Get the image's natural size
+//         const width = img.naturalWidth;
+//         const height = img.naturalHeight;
 
-        if (width === 0 || height === 0) {
-            console.error("Image dimensions are 0. Check if the image is fully loaded.");
-            return;
-        }
+//         if (width === 0 || height === 0) {
+//             console.error("Image dimensions are 0. Check if the image is fully loaded.");
+//             return;
+//         }
 
-        // Set canvas size to match image
-        canvas.width = width;
-        canvas.height = height;
-        canvas.style.width = img.width + "px";
-        canvas.style.height = img.height + "px";
-        canvas.style.transition = "opacity 0.5s ease-in-out"; // Optional fade-in
+//         // Set canvas size to match image
+//         canvas.width = width;
+//         canvas.height = height;
+//         canvas.style.width = img.width + "px";
+//         canvas.style.height = img.height + "px";
+//         canvas.style.transition = "opacity 0.5s ease-in-out"; // Optional fade-in
 
-        // Replace the image with the canvas
-        img.parentNode.replaceChild(canvas, img);
+//         // Replace the image with the canvas (this makes the pixelated image visible initially)
+//         img.parentNode.replaceChild(canvas, img);
 
-        let percent = 0.05; // Start at 5% resolution
+//         // Initial pixelation (5% resolution)
+//         let percent = 0.001;
+//         const reveal = () => {
+//             if (percent >= 1) return; // Stop when fully revealed
 
-        function reveal() {
-            if (percent >= 1) return; // Stop when fully revealed
+//             // Gradually increase the reveal rate
+//             percent += (percent < 0.1) ? 0.001 : 0.1; // Slower at first, then faster
 
-            percent += (percent < 0.1) ? 0.001 : 0.02; // Faster progression after 10%
+//             const scaledWidth = Math.max(1, width * percent);
+//             const scaledHeight = Math.max(1, height * percent);
 
-            const scaledWidth = Math.max(1, width * percent);
-            const scaledHeight = Math.max(1, height * percent);
+//             ctx.clearRect(0, 0, width, height);
+//             ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+//             ctx.drawImage(canvas, 0, 0, scaledWidth, scaledHeight, 0, 0, width, height);
 
-            ctx.clearRect(0, 0, width, height);
-            ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
-            ctx.drawImage(canvas, 0, 0, scaledWidth, scaledHeight, 0, 0, width, height);
+//             requestAnimationFrame(reveal);
+//         };
 
-            requestAnimationFrame(reveal);
-        }
+//         const observer = new IntersectionObserver((entries) => {
+//             entries.forEach((entry) => {
+//                 if (entry.isIntersecting) {
+//                     reveal(); // Start the animation when the image is in view
+//                     observer.unobserve(canvas); // Stop observing once the animation starts
+//                 }
+//             });
+//         }, { threshold: 0.2 });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    reveal();
-                    observer.unobserve(canvas); // Run animation once
-                }
-            });
-        }, { threshold: 0.5 });
+//         // Make sure the canvas starts visible with pixelation
+//         canvas.style.opacity = "1"; // Ensure it's visible immediately
 
-        observer.observe(canvas);
-    }
-});
+//         observer.observe(canvas);
+//     }
+// });
+
+
+
+
 
 
 
