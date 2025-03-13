@@ -175,6 +175,15 @@ window.addEventListener('load', function(event) {
 });
 
 
+// project tab hover
+
+const projectTab = document.querySelectorAll('.selected_fill');
+
+// projectTab.forEach((tab) => {
+//     tab.addEventListener('mouseenter', function() {
+//         console.log('wow');
+//     }
+// };
 
 
 
@@ -281,8 +290,9 @@ infoLink.addEventListener("mouseleave", leaveAnimation);
 
 // Selected Work Sticky Scroll
 // Get each container and store in array
-gsap.utils.toArray(".selected_container").forEach((el) => { // iterate through each container, get elements, and create gsap timeline w/ scroll trigger
-
+gsap.utils.toArray(".selected_div").forEach((el) => { // iterate through each container, get elements, and create gsap timeline w/ scroll trigger
+    const selectedNumber = el.querySelector('.selected_number-div');
+    const selectedFill = el.querySelector('.selected_fill');
 
     const title = el.querySelector('.selected_title span'); // Project Title
     title.setAttribute('aria-label', title.innerText);
@@ -327,6 +337,39 @@ gsap.utils.toArray(".selected_container").forEach((el) => { // iterate through e
         const split = new SplitType(line, { types: 'chars' });
         projectTL.from(split.chars, {}, "<");   // Add animation to end of timeline
     });
+
+
+    selectedNumber.tl = gsap.timeline({ // Create timeline for selected number
+        paused: true,
+        defaults: {
+            duration: 0.5,
+            ease: "power2.inOut"
+        }
+    });
+
+    selectedNumber.tl.fromTo(selectedFill, {
+        width: "0%"
+    }, {
+        width: "100%"
+    });
+    selectedNumber.tl.add("midway");
+    selectedNumber.tl.fromTo(selectedFill, {
+        width: "100%",
+        left: 0
+    }, {
+        width: "0%",
+        left: "100%",
+        immediateRender: false
+    });
+    
+
+    selectedNumber.addEventListener("mouseenter", function() {
+        selectedNumber.tl.tweenFromTo(0, "midway");
+    })
+
+    selectedNumber.addEventListener("mouseleave", function() {
+        selectedNumber.tl.play();
+    })
 });
 
 
