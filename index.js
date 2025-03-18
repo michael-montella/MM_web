@@ -83,7 +83,6 @@ function showName() {
 
 // Preloader animation
 const firstName = document.querySelector(".hero_name");
-console.log(firstName);
 
 const heroTitle = document.querySelector(".hero_h1");
 heroTitle.setAttribute('aria-label', heroTitle.innerText);
@@ -108,7 +107,6 @@ const preloader = gsap.timeline({
 });
 
 const overlays = document.querySelectorAll('.overlay');
-console.log(overlays);
 
 function init() {
     preloader
@@ -173,6 +171,7 @@ function init() {
 window.addEventListener('load', function(event) {
     hideName();
     init();
+    selected();
 });
 
 
@@ -287,95 +286,158 @@ infoLink.addEventListener("mouseleave", leaveAnimation);
 //     })
 // })
 
+const charSplit = (el, selector) => {
+    const text = el.querySelector(selector)
+    text.setAttribute('aria-label', text.innerText)
+
+    return new SplitType(text, { types: 'chars' })
+}
+
+const selected = () => {
+    let projectNum = 1
+    gsap.utils.toArray('.selected_div').forEach((el) => {
+        const selectedNumber = el.querySelector('.selected_number-div')
+        const title = charSplit(el, '.selected_title')
+        const subTitle = charSplit(el, 'h6.selected_subtitle')
+        const linkChars = charSplit(el, '.selected_link-text span')
+        // const dateChars = charSplit(el, 'selected_date span')
+
+
+        selectedNumber.setAttribute("href", `#project-${projectNum}`)
+        projectNum++
+
+        const selectedFill = el.querySelector('.selected_fill')
+
+        selectedNumber.tl = gsap.timeline({ // Create timeline for selected number
+            paused: true,
+            defaults: {
+                duration: 0.5,
+                ease: "power2.inOut"
+            }
+        });
+
+        selectedNumber.tl.fromTo(selectedFill, {
+            width: "0%"
+        }, {
+            width: "100%"
+        });
+        selectedNumber.tl.add("midway");
+        selectedNumber.tl.fromTo(selectedFill, {
+            width: "100%",
+            left: 0
+        }, {
+            width: "0%",
+            left: "100%",
+            immediateRender: false
+        });
+        
+
+        selectedNumber.addEventListener("mouseenter", function() {
+            selectedNumber.tl.tweenFromTo(0, "midway");
+        })
+
+        selectedNumber.addEventListener("mouseleave", function() {
+            selectedNumber.tl.play();
+        })
+
+        selectedNumber.addEventListener('mouseenter', () => {
+
+        })
+    })
+}
+
 
 
 // Selected Work Sticky Scroll
 // Get each container and store in array
-gsap.utils.toArray(".selected_div").forEach((el) => { // iterate through each container, get elements, and create gsap timeline w/ scroll trigger
-    const selectedNumber = el.querySelector('.selected_number-div');
-    const selectedFill = el.querySelector('.selected_fill');
+// gsap.utils.toArray(".selected_div").forEach((el) => { // iterate through each container, get elements, and create gsap timeline w/ scroll trigger
+//     const selectedNumber = el.querySelector('.selected_number-div');
+//     const selectedFill = el.querySelector('.selected_fill');
 
-    const title = el.querySelector('.selected_title span'); // Project Title
-    title.setAttribute('aria-label', title.innerText);
-    const titleChars = new SplitType(title, { types: 'chars' });
+//     const title = el.querySelector('.selected_title'); // Project Title
+//     console.log(title)
+//     title.setAttribute('aria-label', title.innerText);
+//     const titleChars = new SplitType(title, { types: 'chars' });
 
-    const subTitle = el.querySelector('.selected_number span'); // Project SubTitle
-    subTitle.setAttribute('aria-label', subTitle.innerText);
-    const subTitleChars = new SplitType(subTitle, { types: 'chars' });
+//     const subTitle = el.querySelector('.selected_number span'); // Project SubTitle
+//     subTitle.setAttribute('aria-label', subTitle.innerText);
+//     const subTitleChars = new SplitType(subTitle, { types: 'chars' });
 
-    const linkText = el.querySelector('.selected_link-text span'); // Project link
-    const linkChars = new SplitType(linkText, { types: 'chars' });
+//     const linkText = el.querySelector('.selected_link-text span'); // Project link
+//     const linkChars = new SplitType(linkText, { types: 'chars' });
 
-    const dateText = el.querySelector('.selected_date span'); // Project date
-    const dateChars = new SplitType(dateText, { types: 'chars' });
+//     const dateText = el.querySelector('.selected_date span'); // Project date
+//     const dateChars = new SplitType(dateText, { types: 'chars' });
 
-    const bodyText = el.querySelectorAll('.selected_categories span'); // Project body text
+//     const bodyText = el.querySelectorAll('.selected_categories span'); // Project body text
    
     
-    const projectTL = gsap.timeline({ // Create timeline
-        scrollTrigger: {
-            trigger: el,    // This container is trigger
-            start: "top 95%",
-            toggleActions: "restart none none reverse",     // Reverses animation when it leaves out the bottom
-        },
-        defaults: { // Each element is animated in the same way so all properties are in defaults
-            yPercent: 100,
-            duration: 0.9,
-            ease: "power3.out",
-            stagger: {
-                each: 0.01,
-                from: "start"
-            }
-        }
-    });
+//     const projectTL = gsap.timeline({ // Create timeline
+//         scrollTrigger: {
+//             trigger: el,    // This container is trigger
+//             start: "top 95%",
+//             toggleActions: "restart none none reverse",     // Reverses animation when it leaves out the bottom
+//         },
+//         defaults: { // Each element is animated in the same way so all properties are in defaults
+//             yPercent: 100,
+//             duration: 0.9,
+//             ease: "power3.out",
+//             stagger: {
+//                 each: 0.01,
+//                 from: "start"
+//             }
+//         }
+//     });
 
-    projectTL.from(subTitleChars.chars, {}) 
-    .from([titleChars.chars, linkChars.chars], {}, "-=0.75")
-    .from(dateChars.chars, {}, "-=0.75")
+//     projectTL.from(subTitleChars.chars, {}) 
+//     .from([titleChars.chars, linkChars.chars], {}, "-=0.75")
+//     .from(dateChars.chars, {}, "-=0.75")
 
-    bodyText.forEach((line) => { // each line of body text is stored in an array, loop through array and create split type
-        line.setAttribute('aria-label', line.innerText);
-        const split = new SplitType(line, { types: 'chars' });
-        projectTL.from(split.chars, {}, "<");   // Add animation to end of timeline
-    });
+//     bodyText.forEach((line) => { // each line of body text is stored in an array, loop through array and create split type
+//         line.setAttribute('aria-label', line.innerText);
+//         const split = new SplitType(line, { types: 'chars' });
+//         projectTL.from(split.chars, {}, "<");   // Add animation to end of timeline
+//     });
 
 
-    selectedNumber.tl = gsap.timeline({ // Create timeline for selected number
-        paused: true,
-        defaults: {
-            duration: 0.5,
-            ease: "power2.inOut"
-        }
-    });
+//     selectedNumber.tl = gsap.timeline({ // Create timeline for selected number
+//         paused: true,
+//         defaults: {
+//             duration: 0.5,
+//             ease: "power2.inOut"
+//         }
+//     });
 
-    selectedNumber.tl.fromTo(selectedFill, {
-        width: "0%"
-    }, {
-        width: "100%"
-    });
-    selectedNumber.tl.add("midway");
-    selectedNumber.tl.fromTo(selectedFill, {
-        width: "100%",
-        left: 0
-    }, {
-        width: "0%",
-        left: "100%",
-        immediateRender: false
-    });
+//     selectedNumber.tl.fromTo(selectedFill, {
+//         width: "0%"
+//     }, {
+//         width: "100%"
+//     });
+//     selectedNumber.tl.add("midway");
+//     selectedNumber.tl.fromTo(selectedFill, {
+//         width: "100%",
+//         left: 0
+//     }, {
+//         width: "0%",
+//         left: "100%",
+//         immediateRender: false
+//     });
     
 
-    selectedNumber.addEventListener("mouseenter", function() {
-        selectedNumber.tl.tweenFromTo(0, "midway");
-    })
+//     selectedNumber.addEventListener("mouseenter", function() {
+//         selectedNumber.tl.tweenFromTo(0, "midway");
+//     })
 
-    selectedNumber.addEventListener("mouseleave", function() {
-        selectedNumber.tl.play();
-    })
-});
-
-
+//     selectedNumber.addEventListener("mouseleave", function() {
+//         selectedNumber.tl.play();
+//     })
+// });
 
 
+
+// Adjust sticky project tabs
+const tab = document.querySelectorAll('selected_number-div');
+// console.log(tab);
 
 
 // individual text opacity change on hover

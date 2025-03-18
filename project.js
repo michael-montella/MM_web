@@ -1,5 +1,9 @@
 gsap.registerPlugin(ScrollTrigger);
 
+function hideAria(e) {
+    e.setAttribute('aria-hidden', 'true');
+}
+
 const heroNameText = document.querySelectorAll(".hero_name");
 heroNameText.forEach((el) => { // Sets aria label to account for screen readers and split type
     el.setAttribute('aria-label', el.innerText);
