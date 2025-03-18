@@ -83,6 +83,7 @@ function showName() {
 
 // Preloader animation
 const firstName = document.querySelector(".hero_name");
+console.log(firstName);
 
 const heroTitle = document.querySelector(".hero_h1");
 heroTitle.setAttribute('aria-label', heroTitle.innerText);
