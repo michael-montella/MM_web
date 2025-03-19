@@ -43,8 +43,8 @@ function showName() {
 
 window.addEventListener('load', function(event) {
     hideName();
-    setImageWidth();
 });
+
 
 
 /** Set image width */
@@ -67,42 +67,48 @@ setImageWidth = () => {
 
 }
 
-
-/** Set section links */
-
-const sectionLinks = document.querySelectorAll('.project_section-link')
-sectionLinks.forEach((link) => {
-    link.setAttribute('href', `#${link.innerText}`)
+document.addEventListener('DOMContentLoaded', () => {
+    setImageWidth()
 })
+
+
 
 
 /** Lenis */
 
-let lenis = new Lenis({
-    lerp: 0.2,
-    wheelMultiplier: 1,
-    gestureOrientation: "vertical",
-    normalizeWheel: false,
-    smoothTouch: false,
-});
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
-$("[data-lenis-start]").on("click", function () {
-    lenis.start();
-});
-$("[data-lenis-stop]").on("click", function () {
-    lenis.stop();
-});
-$("[data-lenis-toggle]").on("click", function () {
-        $(this).toggleClass("stop-scroll");
-    if ($(this).hasClass("stop-scroll")) {
-     lenis.stop();
-    } else {
-        lenis.start();
-    }
-});
+// Lenis
+const lenis = new Lenis({
+    autoRaf: true,
+  });
+  
+  // Scroll-To Anchor Lenis
+  function initScrollToAnchorLenis() {
+    
+    // Set scroll links
+    const sectionLinks = document.querySelectorAll('.project_section-link')
+    sectionLinks.forEach((link) => {
+        console.log(link.getAttribute('data-anchor-target'))
+        link.setAttribute('href', `#${link.getAttribute('data-anchor-target')}`)
+    })
+
+    // Scroll to section
+    document.querySelectorAll("[data-anchor-target]").forEach(element => {
+      element.addEventListener("click", function () {
+        console.log(this.getAttribute("data-anchor-target"))
+        const targetScrollToAnchorLenis = this.getAttribute("data-anchor-target");
+  
+        lenis.scrollTo(targetScrollToAnchorLenis, {
+          easing: (x) => (x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2),
+          duration: 1.2,
+          offset: 0 // Option to create an offset when there is a fixed navigation for example
+        });
+      });
+    });
+  }
+  
+  // Initialize Scroll-To Anchor Lenis
+  document.addEventListener('DOMContentLoaded', () => {
+    initScrollToAnchorLenis();
+  });
 
 
