@@ -4,6 +4,7 @@ function hideAria(e) {
     e.setAttribute('aria-hidden', 'true');
 }
 
+/** Hide Name */
 const heroNameText = document.querySelectorAll(".hero_name");
 heroNameText.forEach((el) => { // Sets aria label to account for screen readers and split type
     el.setAttribute('aria-label', el.innerText);
@@ -43,3 +44,62 @@ function showName() {
 window.addEventListener('load', function(event) {
     hideName();
 });
+
+
+/** Set image width */
+
+const getAspect = (img) => {
+    const w = img.naturalWidth
+    const h = img.naturalHeight
+
+    return w/h
+}
+
+const projectGallery = document.querySelectorAll('.project_gallery-list img')
+projectGallery.forEach((img) => {
+    if(getAspect(img) < 1) {
+        img.classList.add('halfWidth')
+        img.parentNode.classList.add('imgCenter')
+    }
+})
+
+
+/** Set section links */
+
+const sectionLinks = document.querySelectorAll('.project_section-link')
+sectionLinks.forEach((link) => {
+    console.log(link.innerText)
+    link.setAttribute('href', `#${link.innerText}`)
+})
+
+
+/** Lenis */
+
+let lenis = new Lenis({
+    lerp: 0.2,
+    wheelMultiplier: 1,
+    gestureOrientation: "vertical",
+    normalizeWheel: false,
+    smoothTouch: false,
+});
+function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+$("[data-lenis-start]").on("click", function () {
+    lenis.start();
+});
+$("[data-lenis-stop]").on("click", function () {
+    lenis.stop();
+});
+$("[data-lenis-toggle]").on("click", function () {
+        $(this).toggleClass("stop-scroll");
+    if ($(this).hasClass("stop-scroll")) {
+     lenis.stop();
+    } else {
+        lenis.start();
+    }
+});
+
+
