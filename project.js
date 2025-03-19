@@ -43,6 +43,7 @@ function showName() {
 
 window.addEventListener('load', function(event) {
     hideName();
+    setImageWidth();
 });
 
 
@@ -55,20 +56,22 @@ const getAspect = (img) => {
     return w/h
 }
 
-const projectGallery = document.querySelectorAll('.project_gallery-list img')
-projectGallery.forEach((img) => {
-    if(getAspect(img) < 1) {
-        img.classList.add('halfWidth')
-        img.parentNode.classList.add('imgCenter')
-    }
-})
+setImageWidth = () => {
+    const projectGallery = document.querySelectorAll('.project_gallery-list img')
+    projectGallery.forEach((img) => {
+        if(getAspect(img) < 1) {
+            img.classList.add('halfWidth')
+            img.parentNode.classList.add('imgCenter')
+        }
+    })
+
+}
 
 
 /** Set section links */
 
 const sectionLinks = document.querySelectorAll('.project_section-link')
 sectionLinks.forEach((link) => {
-    console.log(link.innerText)
     link.setAttribute('href', `#${link.innerText}`)
 })
 
