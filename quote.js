@@ -13,7 +13,11 @@ const quotes = [
     'I chose you not as my next but as my last, and should you fall, then I will follow. – Tairn',
     'The work is mysterious and important',
     'Please enjoy each design equally',
-    'The earth is littered with ruins of the empires that once believed they were eternal. – Camille Paglia'
+    'The earth is littered with ruins of the empires that once believed they were eternal. – Camille Paglia',
+    'If you don’t learn to find joy in the snow, you’ll have less joy in your life and precisely the same amount of snow. – James Sexton',
+    'Tradition is just peer pressure from dead people – James Sexton',
+    'The person who discovered water probably wasn’t a fish. – James Sexton',
+    'I’ve been trying to hangboard every other day, and it’s the other day. – Alex Honnold',
 ]
 
 
