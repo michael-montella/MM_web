@@ -4,7 +4,7 @@ const quotes = [
     'In the beginning the Universe was created.  This has made a lot of people very angry and been widely regarded as a bad move. – Hitchhiker’s Guide to the Galaxy',
     'Grab a seat but trust me, you’re only going to need the edge. – Ted Mosby',
     'There is considerable overlap between the intelligence of the smartest bears and the dumbest tourists – A park ranger',
-    '"Funny," he intoned funereally, "how just when you think life can’t possibly get any worse it suddenly does."',
+    '"Funny," he intoned funereally, "how just when you think life can’t possibly get any worse it suddenly does." – Hitchhiker’s Guide to the Galaxy',
     'It is a mistake to think you can solve any major problems just with potatoes. – Hitchhiker’s Guide to the Galaxy',
     'That’s the funny thing about arriving somewhere, Vin... Once you’re there, the only thing you can really do is leave again. – Kelsier',
     'People’s memories are maybe the fuel they burn to stay alive. – Haruki Murakami',
