@@ -168,22 +168,8 @@ function init() {
 }
 
 
-window.addEventListener('load', function(event) {
-    hideName();
-    init();
-    selected();
-});
 
 
-// project tab hover
-
-const projectTab = document.querySelectorAll('.selected_fill');
-
-// projectTab.forEach((tab) => {
-//     tab.addEventListener('mouseenter', function() {
-//         console.log('wow');
-//     }
-// };
 
 
 
@@ -269,23 +255,6 @@ infoLink.addEventListener("mouseleave", leaveAnimation);
 
 
 
-// Quote text animate in -> gotta wrap in span or something I think
-
-// gsap.utils.toArray(".indent").forEach((el) => {
-//     console.log(el.innerText);
-//     const quoteLines = new SplitType(el, { types: "lines" });
-
-//     gsap.from(quoteLines.lines, {
-//         yPercent: 100,
-//         duration: 0.9,
-//         ease: "power3.out",
-//         stagger: {
-//             each: 0.01,
-//             from: "start"
-//         }
-//     })
-// })
-
 const charSplit = (el, selector) => {
     const text = el.querySelector(selector)
     text.setAttribute('aria-label', text.innerText)
@@ -348,112 +317,6 @@ const selected = () => {
 
 
 
-// Selected Work Sticky Scroll
-// Get each container and store in array
-// gsap.utils.toArray(".selected_div").forEach((el) => { // iterate through each container, get elements, and create gsap timeline w/ scroll trigger
-//     const selectedNumber = el.querySelector('.selected_number-div');
-//     const selectedFill = el.querySelector('.selected_fill');
-
-//     const title = el.querySelector('.selected_title'); // Project Title
-//     console.log(title)
-//     title.setAttribute('aria-label', title.innerText);
-//     const titleChars = new SplitType(title, { types: 'chars' });
-
-//     const subTitle = el.querySelector('.selected_number span'); // Project SubTitle
-//     subTitle.setAttribute('aria-label', subTitle.innerText);
-//     const subTitleChars = new SplitType(subTitle, { types: 'chars' });
-
-//     const linkText = el.querySelector('.selected_link-text span'); // Project link
-//     const linkChars = new SplitType(linkText, { types: 'chars' });
-
-//     const dateText = el.querySelector('.selected_date span'); // Project date
-//     const dateChars = new SplitType(dateText, { types: 'chars' });
-
-//     const bodyText = el.querySelectorAll('.selected_categories span'); // Project body text
-   
-    
-//     const projectTL = gsap.timeline({ // Create timeline
-//         scrollTrigger: {
-//             trigger: el,    // This container is trigger
-//             start: "top 95%",
-//             toggleActions: "restart none none reverse",     // Reverses animation when it leaves out the bottom
-//         },
-//         defaults: { // Each element is animated in the same way so all properties are in defaults
-//             yPercent: 100,
-//             duration: 0.9,
-//             ease: "power3.out",
-//             stagger: {
-//                 each: 0.01,
-//                 from: "start"
-//             }
-//         }
-//     });
-
-//     projectTL.from(subTitleChars.chars, {}) 
-//     .from([titleChars.chars, linkChars.chars], {}, "-=0.75")
-//     .from(dateChars.chars, {}, "-=0.75")
-
-//     bodyText.forEach((line) => { // each line of body text is stored in an array, loop through array and create split type
-//         line.setAttribute('aria-label', line.innerText);
-//         const split = new SplitType(line, { types: 'chars' });
-//         projectTL.from(split.chars, {}, "<");   // Add animation to end of timeline
-//     });
-
-
-//     selectedNumber.tl = gsap.timeline({ // Create timeline for selected number
-//         paused: true,
-//         defaults: {
-//             duration: 0.5,
-//             ease: "power2.inOut"
-//         }
-//     });
-
-//     selectedNumber.tl.fromTo(selectedFill, {
-//         width: "0%"
-//     }, {
-//         width: "100%"
-//     });
-//     selectedNumber.tl.add("midway");
-//     selectedNumber.tl.fromTo(selectedFill, {
-//         width: "100%",
-//         left: 0
-//     }, {
-//         width: "0%",
-//         left: "100%",
-//         immediateRender: false
-//     });
-    
-
-//     selectedNumber.addEventListener("mouseenter", function() {
-//         selectedNumber.tl.tweenFromTo(0, "midway");
-//     })
-
-//     selectedNumber.addEventListener("mouseleave", function() {
-//         selectedNumber.tl.play();
-//     })
-// });
-
-
-
-// Adjust sticky project tabs
-const tab = document.querySelectorAll('selected_number-div');
-// console.log(tab);
-
-
-// individual text opacity change on hover
-
-// const text = new SplitType('#info-link', { types: 'chars' });
-// const chars = document.querySelectorAll('.char');
-
-// chars.forEach((char) => {
-//     char.addEventListener("mouseenter", function() {
-//         gsap.to(char, {opacity: 0.3});
-//     });
-//     char.addEventListener("mouseleave", function() {
-//         gsap.to(char, {opacity: 1});
-//     });
-// });
-
 
 
 // lenis smooth scroll
@@ -485,123 +348,9 @@ $("[data-lenis-toggle]").on("click", function () {
 });
 
 
-// Pixelated image
-// document.addEventListener("DOMContentLoaded", function () {
-//     const images = document.querySelectorAll(".pixelated-image");
 
-//     images.forEach((img) => {
-//         // Ensure the image is fully loaded before processing
-//         if (!img.complete) {
-//             img.onload = () => setupCanvas(img);
-//         } else {
-//             setupCanvas(img);
-//         }
-//     });
-
-//     function setupCanvas(img) {
-//         const canvas = document.createElement("canvas");
-//         const ctx = canvas.getContext("2d");
-
-//         // Get the image's natural size
-//         const width = img.naturalWidth;
-//         const height = img.naturalHeight;
-
-//         if (width === 0 || height === 0) {
-//             console.error("Image dimensions are 0. Check if the image is fully loaded.");
-//             return;
-//         }
-
-//         // Set canvas size to match image
-//         canvas.width = width;
-//         canvas.height = height;
-//         canvas.style.width = img.width + "px";
-//         canvas.style.height = img.height + "px";
-//         canvas.style.transition = "opacity 0.5s ease-in-out"; // Optional fade-in
-
-//         // Replace the image with the canvas (this makes the pixelated image visible initially)
-//         img.parentNode.replaceChild(canvas, img);
-
-//         // Initial pixelation (5% resolution)
-//         let percent = 0.001;
-//         const reveal = () => {
-//             if (percent >= 1) return; // Stop when fully revealed
-
-//             // Gradually increase the reveal rate
-//             percent += (percent < 0.1) ? 0.001 : 0.1; // Slower at first, then faster
-
-//             const scaledWidth = Math.max(1, width * percent);
-//             const scaledHeight = Math.max(1, height * percent);
-
-//             ctx.clearRect(0, 0, width, height);
-//             ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
-//             ctx.drawImage(canvas, 0, 0, scaledWidth, scaledHeight, 0, 0, width, height);
-
-//             requestAnimationFrame(reveal);
-//         };
-
-//         const observer = new IntersectionObserver((entries) => {
-//             entries.forEach((entry) => {
-//                 if (entry.isIntersecting) {
-//                     reveal(); // Start the animation when the image is in view
-//                     observer.unobserve(canvas); // Stop observing once the animation starts
-//                 }
-//             });
-//         }, { threshold: 0.2 });
-
-//         // Make sure the canvas starts visible with pixelation
-//         canvas.style.opacity = "1"; // Ensure it's visible immediately
-
-//         observer.observe(canvas);
-//     }
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Text scramble
-// document.addEventListener("DOMContentLoaded", function() {
-    // function animateText(className) {
-        // const names = document.querySelectorAll(`.${className}`);
-        // const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~✓✗★☆◆◇■□▲▼●○◎♠♣♥♦✈∞→←↑↓↔↕";
-    
-        // names.forEach((el) => {
-        //     const originalName = el.innerText;
-        //     const finalText = originalName.split("");
-        //     const splitText = new SplitType(el, { types: "chars" });
-    
-        //     const charElements = splitText.chars;
-        //     const indices = [...Array(charElements.length).keys()];
-    
-        //     indices.sort(() => Math.random() - 0.5);
-        //     indices.forEach((charIndex, i) => {
-        //         gsap.to(charElements[charIndex], {
-        //             duration: 0.7,
-        //             textContent: finalText[charIndex],
-        //             ease: "power2.in",
-        //             repeat: 0,
-        //             delay: i * 0.1,
-        //             modifiers: {
-        //                 textContent: () => chars[Math.floor(Math.random() * chars.length)]
-        //             },
-        //             onComplete: () => {
-        //                 charElements[charIndex].innerText = finalText[charIndex];
-        //             }
-        //         });
-        //     });
-        // });
-
-        // console.log('wow');
-    // }
-    
-    //     animateText("hero_name");
-    // });
+window.addEventListener('load', function(event) {
+    hideName();
+    init();
+    selected();
+});
