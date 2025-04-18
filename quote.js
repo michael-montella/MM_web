@@ -86,3 +86,6 @@ const quotes = [
 let index = quotes[Math.floor(Math.random() * quotes.length)]
 $(".footer_section_quote").text(index.quote)
 $(".footer_section_source").text(`– ${index.source}`)
+
+let currentYear = new Date().getFullYear();
+$(".copyright_year").text(currentYear)
