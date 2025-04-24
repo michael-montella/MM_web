@@ -80,6 +80,14 @@ const quotes = [
         quote: 'not happy with how wasteful coffee pods are but i roll my own joints instead of buying pre-rolls so it cancels out',
         source: ''
     },
+    {
+        quote: 'Belief isn’t simply a thing for fair times and bright days, I think. What is belief–what is faith–if you don’t continue in it after failure?',
+        source: 'Sazed'
+    },
+    {
+        quote: 'If you’re always on time, it implies that you never have anything better you should be doing',
+        source: 'Kelsier'
+    }
 ]
 
 
