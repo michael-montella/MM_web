@@ -47,29 +47,29 @@ window.addEventListener('load', function(event) {
 
 
 
-/** Set image width */
+// /** Set image width */
 
-const getAspect = (img) => {
-    const w = img.naturalWidth
-    const h = img.naturalHeight
+// const getAspect = (img) => {
+//     const w = img.naturalWidth
+//     const h = img.naturalHeight
 
-    return w/h
-}
+//     return w/h
+// }
 
-setImageWidth = () => {
-    const projectGallery = document.querySelectorAll('.project_gallery-list img')
-    projectGallery.forEach((img) => {
-        if(getAspect(img) < 1) {
-            img.classList.add('halfWidth')
-            img.parentNode.classList.add('imgCenter')
-        }
-    })
+// setImageWidth = () => {
+//     const projectGallery = document.querySelectorAll('.project_gallery-list img')
+//     projectGallery.forEach((img) => {
+//         if(getAspect(img) < 1) {
+//             img.classList.add('halfWidth')
+//             img.parentNode.classList.add('imgCenter')
+//         }
+//     })
 
-}
+// }
 
-document.addEventListener('DOMContentLoaded', () => {
-    setImageWidth()
-})
+// document.addEventListener('DOMContentLoaded', () => {
+//     setImageWidth()
+// })
 
 
 
